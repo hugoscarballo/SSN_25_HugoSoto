@@ -1,0 +1,6 @@
+Imagénes de la proetina problema donde se puede observar lo siguiente:
+ -ProteinMonomers: monomeros de la proteina problema diferenciados por colores
+ -ProteincNucleic: acido nucleico (de tipo RNA) en color amarillo y naranja, introducido dentro de la proteina
+ -ProteinIon: iones magnesio y zinc (marcados) introducidos dentro de la proteina
+ -ProteinWater: moléculas de agua (esferas blancas) introducidas dentro de la proteina
+ -ProteinSolvent: molécula compuesta por carbonos en estructura aromática, sofre oxígeno e hidrógeno introducidas dentro de la proteina
