@@ -144,15 +144,29 @@ for m in range(len(T)):
         Magnetization[m]  = n1*M1
         SpecificHeat[m]   = (n1*E2 - n2*E1*E1)*iT2
         Susceptibility[m] = (n1*M2 - n2*M1*M1)*iT
-
-    #Plot spin configuration
-    X = np.linspace(0,N,N)
-    Y = np.zeros(N)
-    plt.scatter(X, Y, c=config, vmin=-1.0, vmax=1.0, cmap='RdBu_r')
-    plt.show()
  
     #Plot final data for this T
     resultPlot(T,Energy,Magnetization,SpecificHeat,Susceptibility)
+
+    #Plot spin configuration
+    RD = []
+    BD = []
+    for k in config:
+        if k==+1:
+            RD.append(1)
+            BD.append(0)
+        else:
+            RD.append(0)
+            BD.append(1)
+
+    X = np.linspace(0,N,N)
+    plt.bar(X,RD, color='red', label='spin up')
+    plt.bar(X,BD, color='blue', label='spin down')
+    plt.yticks([0, 1])
+    plt.ylim(0,1)
+    plt.xlim(0,N)
+    plt.legend()
+    #plt.show()
        
 #End interactive plot: final plot of everything
 plt.ioff()
