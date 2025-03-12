@@ -28,7 +28,7 @@ def mcmove(config, N, beta):
             s = s*(-1)
         elif rand() < np.exp(-cost*beta):
             s = s*(-1)
-            config[a] = s
+        config[a] = s
     #return the new configuration
     return config
 
@@ -104,7 +104,7 @@ M.append(Mag)
 print('Initial configuration:')
 #f = plt.figure(figsize=(15, 15), dpi=80);
 f = plt.figure(dpi=100)
-configPlot(config, 0, N)
+#configPlot(config, 0, N)
 plt.show()
 
 #Turn on interactive mode for plots
@@ -127,7 +127,7 @@ for i in range(msrmnt):
             #plot only certain configurations
             if t%10 == 0:
                 print('\nMC step=',t,' Energy=',Ene,' M=',Mag)
-                configPlot(config, t, N)
+                #configPlot(config, t, N)
 
 #Print end
 print('\nSimulation finished after',t, 'MC steps')
@@ -136,7 +136,7 @@ print('\nSimulation finished after',t, 'MC steps')
 plt.ioff()
 
 #Show final configuration
-configPlot(config, t, N)
+#configPlot(config, t, N)
 plt.show()
 
 #Plot evolution of Energy and Magnetization during the simulation
@@ -151,3 +151,4 @@ plt.xlabel('MC step')
 
 #Show the plot in screen
 plt.show()
+
