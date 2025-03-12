@@ -68,8 +68,9 @@ def calcMag(config):
 N = 64
 #Enter data for the simulation
 temp = float(input("\n Enter temperature in reduced units (suggestion 1.2): "))
-maximum_iterations = int(input("\n Enter maximum number of Monte Carlo iterations (suggeestion 50):"))
-energy_convergence = float(input("\n Enter energy convergence for the system (suggestion 0.001):"))
+maximum_iterations = int(input("\n Enter maximum number of Monte Carlo iterations (suggeestion 1000):"))
+energy_convergence = float(input("\n Enter energy convergence for the system (suggestion 0.001, lower could be possible but very difficult to achieve and higher to easy):"))
+number_repetition = int(input("\n Minimum number of times convergence has to be reach consecutively to consider simulation converges (suggestion 5 if there isn't much noise, less if there is):"))
 
 #Consider number of decimals in convergence
 energy_str = f"{energy_convergence:.10f}".rstrip('0')
@@ -109,6 +110,7 @@ print("Starting MC simulation")
 plt.ion()
 
 #Perform the MC iterations
+energy_difference = np.zeros(number_repetition)
 
 for i in range(maximum_iterations):
             #call MC calculation
@@ -124,19 +126,28 @@ for i in range(maximum_iterations):
 
             #plot only certain configurations
             if t%10 == 0:
-                print('\nMC step=',t,' Energy=',Ene,' M=',Mag)
-                print(config)
+                print(f"MC step= {t} Energy= {Ene:.{decimal}f} M= {Mag}")
                 configPlot(f, config, t, N)
             
-            energy_difference = abs(round(E[i]-E[i-1],decimal))  #calculate energy difference          
-            if energy_difference>energy_convergence:
-                #evaluate if converges
-                print(f"MC step= {t} Absolute energy difference= {energy_difference:.{decimal}f} Energy convergence= {energy_convergence}")
+            #evaluate energy convergence in certain consecutive MC steps
+            energy_diff = abs(E[i]-E[i-1])
+            if t<number_repetition:
+                print(f"MC step= {t} Energy= {Ene:.{decimal}f} M= {Mag}")
+                print(f" Absolute energy difference= {energy_diff:.{decimal}f} Energy convergence= {energy_convergence}")
                 continue
             else:
-                #evaluate if converges
-                print(f"MC step= {t} Absolute energy difference= {energy_difference:.{decimal}f} Energy convergence= {energy_convergence}")
-                break   
+                for k in range(number_repetition):
+                    energy_difference[k] = abs(round(E[i-k]-E[i-k-1],decimal))       
+                if all(j<=energy_convergence for j in energy_difference):
+                    #evaluate if converges
+                    print(f"MC step= {t} Energy= {Ene:.{decimal}f} M= {Mag}")
+                    print(f" Absolute energy difference= {energy_diff:.{decimal}f} Energy convergence= {energy_convergence}")
+                    break
+                else:
+                    #evaluate if converges
+                    print(f"MC step= {t} Energy= {Ene:.{decimal}f} M= {Mag}")
+                    print(f" Absolute energy difference= {energy_diff:.{decimal}f} Energy convergence= {energy_convergence}")
+                    continue
             
 #Print end
 if t==maximum_iterations:
